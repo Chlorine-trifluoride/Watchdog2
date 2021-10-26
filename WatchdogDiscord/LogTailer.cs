@@ -13,6 +13,7 @@ namespace WatchdogDiscord
         private const string logPath = @"/var/log/";
 
         private DiscordSocketClient client;
+        private FileSystemWatcher watcher;
 
         public LogTailer(DiscordSocketClient client)
         {
@@ -21,8 +22,17 @@ namespace WatchdogDiscord
 
         public async Task Run()
         {
-            FileSystemWatcher watcher = new FileSystemWatcher(logPath);
-            watcher.Filter = "auth.log";
+            watcher = new FileSystemWatcher(logPath);
+            watcher.Filter = "ufw.log";
+
+            watcher.NotifyFilter = NotifyFilters.Attributes |
+                NotifyFilters.CreationTime |
+                NotifyFilters.FileName |
+                NotifyFilters.LastAccess |
+                NotifyFilters.LastWrite |
+                NotifyFilters.Size |
+                NotifyFilters.Security;
+
             watcher.EnableRaisingEvents = true;
             watcher.Changed += Watcher_Changed;
 
