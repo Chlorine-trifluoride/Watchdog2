@@ -39,7 +39,7 @@ namespace WatchdogDiscord
                     if (s != null)
                     {
                         Log.Warn("UFW", s);
-                        client.GroupChannels.FirstOrDefault().SendMessageAsync(s);
+                        client.Guilds.FirstOrDefault().DefaultChannel.SendMessageAsync(s);
                     }
                 }
             }
