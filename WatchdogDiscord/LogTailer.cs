@@ -25,10 +25,14 @@ namespace WatchdogDiscord
             watcher.Filter = "auth.log";
             watcher.EnableRaisingEvents = true;
             watcher.Changed += Watcher_Changed;
+
+            Log.Info("LOGFILE", "OnChanged event registered");
         }
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)
         {
+            Log.Warn("LOGFILE", "OnChanged");
+
             FileStream fs = new FileStream("/var/log/ufw.log", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             using (var sr = new StreamReader(fs))
             {
@@ -39,7 +43,7 @@ namespace WatchdogDiscord
                     if (s != null)
                     {
                         Log.Warn("UFW", s);
-                        client.Guilds.FirstOrDefault().DefaultChannel.SendMessageAsync(s);
+                        //client.Guilds.FirstOrDefault().DefaultChannel.SendMessageAsync(s);
                     }
                 }
             }
